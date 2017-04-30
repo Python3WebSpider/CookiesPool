@@ -1,5 +1,7 @@
 import random
+
 import redis
+
 from cookiespool.config import *
 from cookiespool.error import *
 

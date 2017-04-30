@@ -1,6 +1,8 @@
-import requests
 import time
+
+import requests
 from requests.exceptions import ConnectionError
+
 from cookiespool.config import *
 
 

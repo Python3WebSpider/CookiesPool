@@ -1,6 +1,6 @@
 from flask import Flask, g
+
 from cookiespool.config import *
-from cookiespool.db import CookiesRedisClient, AccountRedisClient
 
 __all__ = ['app']
 

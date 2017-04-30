@@ -1,17 +1,16 @@
 import json
+
 import requests
-import time
 from selenium import webdriver
-from selenium.webdriver import DesiredCapabilities
 from selenium.common.exceptions import WebDriverException, TimeoutException
+from selenium.webdriver import DesiredCapabilities
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support.wait import WebDriverWait
-from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.ui import WebDriverWait
+
+from cookiespool.config import *
 from cookiespool.db import CookiesRedisClient, AccountRedisClient
 from cookiespool.verify import Yundama
-from cookiespool.config import *
-from requests.exceptions import ConnectionError
 
 
 class CookiesGenerator(object):

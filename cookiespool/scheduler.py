@@ -1,10 +1,8 @@
 import time
 from multiprocessing import Process
-from cookiespool.tester import *
-from cookiespool.config import *
+
 from cookiespool.api import app
-import os
-import signal
+from cookiespool.config import *
 
 
 class Scheduler(object):
