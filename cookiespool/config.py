@@ -12,7 +12,7 @@ REDIS_NAME = '*'
 # 云打码相关配置到yundama.com申请注册
 YUNDAMA_USERNAME = 'Germey'
 
-YUNDAMA_PASSWORD = '940629cqc'
+YUNDAMA_PASSWORD = ''
 
 YUNDAMA_APP_ID = '3372'
 
