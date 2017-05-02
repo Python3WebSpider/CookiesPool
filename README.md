@@ -20,7 +20,7 @@ account:weibo:账号
 
 cookies:weibo:账号
 
-类型都是list，内容分别为密码和Cookies
+Value分别为密码和Cookies
 
 账号自行某宝购买
 
