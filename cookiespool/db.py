@@ -201,12 +201,9 @@ if __name__ == '__main__':
     """
     # 测试
     conn = AccountRedisClient(name='weibo')
-    conn.set('14760253606', 'gmidy8470')
-    conn.set('14760253607', 'uoyuic8427')
-    conn.set('18459749258', 'rktfye8937')
-    conn.set('18459748505', 'astvar3647')
-    print(conn.get('18459748505'))
-    print(conn.keys())
+    conn2 = AccountRedisClient(name='mweibo')
+
+
     accounts = conn.all()
     for account in accounts:
-        print(account)
+        conn2.set(account['username'], account['password'])
