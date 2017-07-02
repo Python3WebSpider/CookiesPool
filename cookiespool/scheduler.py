@@ -44,15 +44,12 @@ class Scheduler(object):
         if GENERATOR_PROCESS:
             generate_process = Process(target=Scheduler.generate_cookie)
             generate_process.start()
-            generate_process.join()
 
         if VALID_PROCESS:
             valid_process = Process(target=Scheduler.valid_cookie)
             valid_process.start()
-            valid_process.join()
 
         if API_PROCESS:
             api_process = Process(target=Scheduler.api)
             api_process.start()
-            api_process.join()
 

@@ -23,16 +23,16 @@ YUNDAMA_API_URL = 'http://api.yundama.com/api.php'
 YUNDAMA_MAX_RETRY = 20
 
 # 产生器默认使用的浏览器
-DEFAULT_BROWSER = 'PhantomJS'
+DEFAULT_BROWSER = 'Chrome'
 
 # 产生器类，如扩展其他站点，请在此配置
 GENERATOR_MAP = {
-    'mweibo': 'MWeiboCookiesGenerator'
+    'weibo': 'WeiboCookiesGenerator'
 }
 
 # 测试类，如扩展其他站点，请在此配置
 TESTER_MAP = {
-    'mweibo': 'MWeiboValidTester'
+    'weibo': 'WeiboValidTester'
 }
 
 # 产生器和验证器循环周期
