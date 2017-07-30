@@ -10,42 +10,38 @@ class ValidTester(object):
         self.cookies_db = RedisClient('cookies', self.name)
         self.account_db = RedisClient('accounts', self.name)
     
-    def test(self, account, cookies):
+    def test(self, username, cookies):
         raise NotImplementedError
     
     def run(self):
-        accounts = self.cookies_db.all()
-        print(accounts)
-        for account in accounts:
-            username = account.get('username')
-            cookies = self.cookies_db.get(username)
-            self.test(account, cookies)
+        cookies_groups = self.cookies_db.all()
+        for username, cookies in cookies_groups.items():
+            self.test(username, cookies)
 
 
 class WeiboValidTester(ValidTester):
     def __init__(self, name='weibo'):
         ValidTester.__init__(self, name)
     
-    def test(self, account, cookies):
-        print('Testing Account', account.get('username'))
+    def test(self, username, cookies):
+        print('正在测试Cookies', '用户名', username)
         try:
             cookies = json.loads(cookies)
         except TypeError:
-            print('Invalid Cookies Value', account.get('username'))
-            self.cookies_db.delete(account.get('username'))
-            print('Deleted User', account.get('username'))
-            return None
+            print('Cookies不合法', username)
+            self.cookies_db.delete(username)
+            print('删除Cookies', username)
+            return
         try:
             test_url = TEST_URL_MAP[self.name]
             response = requests.get(test_url, cookies=cookies, timeout=5, allow_redirects=False)
             if response.status_code == 200:
-                print('Valid Cookies', account.get('username'))
+                print('Cookies有效', username)
+                print('部分测试结果', response.text[0:50])
             else:
                 print(response.status_code, response.headers)
-                print('Invalid Cookies', account.get('username'))
-                self.cookies_db.delete(account.get('username'))
-                print('Deleted User', account.get('username'))
+                print('Cookies失效', username)
+                self.cookies_db.delete(username)
+                print('删除Cookies', username)
         except ConnectionError as e:
-            print('Error', e.args)
-            print('Invalid Cookies', account.get('username'))
-
+            print('发生异常', e.args)

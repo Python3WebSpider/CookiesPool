@@ -1,8 +1,6 @@
-import os
 import time
 from io import BytesIO
 from PIL import Image
-from selenium import webdriver
 from selenium.common.exceptions import TimeoutException
 from selenium.webdriver import ActionChains
 from selenium.webdriver.common.by import By
@@ -158,31 +156,34 @@ class WeiboCookies():
         :return:
         """
         # 获得四个按点
-        circles = self.browser.find_elements_by_css_selector('.patt-wrap .patt-circ')
-        dx = dy = 0
-        for index in range(4):
-            circle = circles[numbers[index] - 1]
-            # 如果是第一次循环
-            if index == 0:
-                # 点击第一个按点
-                ActionChains(self.browser) \
-                    .move_to_element_with_offset(circle, circle.size['width'] / 2, circle.size['height'] / 2) \
-                    .click_and_hold().perform()
-            else:
-                # 小幅移动次数
-                times = 30
-                # 拖动
-                for i in range(times):
-                    ActionChains(self.browser).move_by_offset(dx / times, dy / times).perform()
-                    time.sleep(1 / times)
-            # 如果是最后一次循环
-            if index == 3:
-                # 松开鼠标
-                ActionChains(self.browser).release().perform()
-            else:
-                # 计算下一次偏移
-                dx = circles[numbers[index + 1] - 1].location['x'] - circle.location['x']
-                dy = circles[numbers[index + 1] - 1].location['y'] - circle.location['y']
+        try:
+            circles = self.browser.find_elements_by_css_selector('.patt-wrap .patt-circ')
+            dx = dy = 0
+            for index in range(4):
+                circle = circles[numbers[index] - 1]
+                # 如果是第一次循环
+                if index == 0:
+                    # 点击第一个按点
+                    ActionChains(self.browser) \
+                        .move_to_element_with_offset(circle, circle.size['width'] / 2, circle.size['height'] / 2) \
+                        .click_and_hold().perform()
+                else:
+                    # 小幅移动次数
+                    times = 30
+                    # 拖动
+                    for i in range(times):
+                        ActionChains(self.browser).move_by_offset(dx / times, dy / times).perform()
+                        time.sleep(1 / times)
+                # 如果是最后一次循环
+                if index == 3:
+                    # 松开鼠标
+                    ActionChains(self.browser).release().perform()
+                else:
+                    # 计算下一次偏移
+                    dx = circles[numbers[index + 1] - 1].location['x'] - circle.location['x']
+                    dy = circles[numbers[index + 1] - 1].location['y'] - circle.location['y']
+        except:
+            return False
     
     def get_cookies(self):
         """

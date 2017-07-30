@@ -10,12 +10,12 @@ class Scheduler(object):
     @staticmethod
     def valid_cookie(cycle=CYCLE):
         while True:
-            print('Checking Cookies')
+            print('Cookies检测进程开始运行')
             try:
                 for name, cls in TESTER_MAP.items():
                     tester = eval(cls + '(name="' + name + '")')
                     tester.run()
-                    print('Tester Finished')
+                    print('Cookies检测完成')
                     del tester
                     time.sleep(cycle)
             except Exception as e:
@@ -24,20 +24,20 @@ class Scheduler(object):
     @staticmethod
     def generate_cookie(cycle=CYCLE):
         while True:
-            print('Generating Cookies')
+            print('Cookies生成进程开始运行')
             try:
                 for name, cls in GENERATOR_MAP.items():
                     generator = eval(cls + '(name="' + name + '")')
                     generator.run()
-                    print('Generator Finished')
+                    print('Cookies生成完成')
                     generator.close()
-                    print('Deleted Generator')
                     time.sleep(cycle)
             except Exception as e:
                 print(e.args)
 
     @staticmethod
     def api():
+        print('API接口开始运行')
         app.run(host=API_HOST, port=API_PORT)
 
     def run(self):

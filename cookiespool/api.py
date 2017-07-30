@@ -12,7 +12,6 @@ app = Flask(__name__)
 def index():
     return '<h2>Welcome to Cookie Pool System</h2>'
 
-
 def get_conn():
     """
     获取

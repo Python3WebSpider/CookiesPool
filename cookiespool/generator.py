@@ -1,11 +1,6 @@
 import json
-import requests
 from selenium import webdriver
-from selenium.common.exceptions import WebDriverException, TimeoutException
 from selenium.webdriver import DesiredCapabilities
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.support.ui import WebDriverWait
 from cookiespool.config import *
 from cookiespool.db import RedisClient
 from login.weibo.cookies import WeiboCookies
@@ -85,6 +80,8 @@ class CookiesGenerator(object):
                         print('成功删除账号')
                 else:
                     print(result.get('content'))
+        else:
+            print('所有账号都已经成功获取Cookies')
     
     def close(self):
         """
