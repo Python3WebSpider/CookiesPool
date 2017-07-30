@@ -12,8 +12,8 @@ class Scheduler(object):
         while True:
             print('Cookies检测进程开始运行')
             try:
-                for name, cls in TESTER_MAP.items():
-                    tester = eval(cls + '(name="' + name + '")')
+                for website, cls in TESTER_MAP.items():
+                    tester = eval(cls + '(website="' + website + '")')
                     tester.run()
                     print('Cookies检测完成')
                     del tester
@@ -26,8 +26,8 @@ class Scheduler(object):
         while True:
             print('Cookies生成进程开始运行')
             try:
-                for name, cls in GENERATOR_MAP.items():
-                    generator = eval(cls + '(name="' + name + '")')
+                for website, cls in GENERATOR_MAP.items():
+                    generator = eval(cls + '(website="' + website + '")')
                     generator.run()
                     print('Cookies生成完成')
                     generator.close()

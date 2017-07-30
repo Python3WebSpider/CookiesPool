@@ -5,10 +5,10 @@ from cookiespool.db import *
 
 
 class ValidTester(object):
-    def __init__(self, name='default'):
-        self.name = name
-        self.cookies_db = RedisClient('cookies', self.name)
-        self.account_db = RedisClient('accounts', self.name)
+    def __init__(self, website='default'):
+        self.website = website
+        self.cookies_db = RedisClient('cookies', self.website)
+        self.account_db = RedisClient('accounts', self.website)
     
     def test(self, username, cookies):
         raise NotImplementedError
@@ -20,8 +20,8 @@ class ValidTester(object):
 
 
 class WeiboValidTester(ValidTester):
-    def __init__(self, name='weibo'):
-        ValidTester.__init__(self, name)
+    def __init__(self, website='weibo'):
+        ValidTester.__init__(self, website)
     
     def test(self, username, cookies):
         print('正在测试Cookies', '用户名', username)
@@ -33,7 +33,7 @@ class WeiboValidTester(ValidTester):
             print('删除Cookies', username)
             return
         try:
-            test_url = TEST_URL_MAP[self.name]
+            test_url = TEST_URL_MAP[self.website]
             response = requests.get(test_url, cookies=cookies, timeout=5, allow_redirects=False)
             if response.status_code == 200:
                 print('Cookies有效', username)
@@ -45,3 +45,6 @@ class WeiboValidTester(ValidTester):
                 print('删除Cookies', username)
         except ConnectionError as e:
             print('发生异常', e.args)
+
+if __name__ == '__main__':
+    WeiboValidTester().run()

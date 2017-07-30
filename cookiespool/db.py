@@ -53,7 +53,7 @@ class RedisClient(object):
         获取数目
         :return: 数目
         """
-        return len(self.db.hlen(self.key()))
+        return self.db.hlen(self.key())
 
     def random(self):
         """

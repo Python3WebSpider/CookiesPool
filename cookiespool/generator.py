@@ -7,16 +7,17 @@ from login.weibo.cookies import WeiboCookies
 
 
 class CookiesGenerator(object):
-    def __init__(self, name='default'):
+    def __init__(self, website='default'):
         """
         父类, 初始化一些对象
-        :param name: 名称
+        :param website: 名称
         :param browser: 浏览器, 若不使用浏览器则可设置为 None
         """
-        self.name = name
-        self.cookies_db = RedisClient('cookies', self.name)
-        self.accounts_db = RedisClient('accounts', self.name)
-    
+        self.website = website
+        self.cookies_db = RedisClient('cookies', self.website)
+        self.accounts_db = RedisClient('accounts', self.website)
+        self.init_browser()
+
     def __del__(self):
         self.close()
     
@@ -51,7 +52,7 @@ class CookiesGenerator(object):
         """
         dict = {}
         for cookie in cookies:
-            dict[cookie["name"]] = cookie["value"]
+            dict[cookie['name']] = cookie['value']
         return dict
     
     def run(self):
@@ -97,14 +98,14 @@ class CookiesGenerator(object):
 
 
 class WeiboCookiesGenerator(CookiesGenerator):
-    def __init__(self, name='weibo'):
+    def __init__(self, website='weibo'):
         """
-        初始化操作, 微博需要声明一个云打码引用
-        :param name: 名称微博
+        初始化操作
+        :param website: 站点名称
         :param browser: 使用的浏览器
         """
-        CookiesGenerator.__init__(self, name)
-        self.name = name
+        CookiesGenerator.__init__(self, website)
+        self.website = website
     
     def new_cookies(self, username, password):
         """
@@ -118,5 +119,4 @@ class WeiboCookiesGenerator(CookiesGenerator):
 
 if __name__ == '__main__':
     generator = WeiboCookiesGenerator()
-    generator.init_browser()
     generator.run()
