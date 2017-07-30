@@ -11,7 +11,7 @@ pip3 install -r requirements.txt
 
 ## 基础配置 
 
-在config.py修改
+### 接口基本配置
 
 ```python
 # Redis数据库地址
@@ -36,6 +36,7 @@ TESTER_MAP = {
     'weibo': 'WeiboValidTester'
 }
 
+# 检测器检测接口
 TEST_URL_MAP = {
     'weibo': 'https://m.weibo.cn/api/container/getIndex?uid=1804544030&type=uid&page=1&containerid=1076031804544030'
 }
@@ -47,9 +48,7 @@ CYCLE = 120
 API_HOST = '0.0.0.0'
 API_PORT = 5000
 
-
 ```
-
 
 ### 进程开关
 
@@ -68,6 +67,7 @@ API_PROCESS = True
 ## 账号购买
 
 账号可在淘宝购买
+
 
 ## 批量导入
 
