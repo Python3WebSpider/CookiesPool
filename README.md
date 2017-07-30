@@ -1,8 +1,7 @@
 # CookiesPool / Cookies池
 
-可扩展的Cookies池，目前对接了新浪微博，可自行扩展其他站点
+可扩展的Cookies池，目前对接了新浪微博，[m.weibo.cn](https://m.weibo.cn)，可自行扩展其他站点
 
-亲测可用，利用它已经3天成功抓取1亿条微博数据
 
 ## 安装
 
@@ -12,38 +11,63 @@ pip3 install -r requirements.txt
 
 ## 基础配置 
 
-修改cookiespool/config.py
+在config.py修改
 
-### 数据库配置
+```
+# Redis数据库地址
+REDIS_HOST = 'localhost'
 
-account:weibo:账号
+# Redis端口
+REDIS_PORT = 6379
 
-cookies:weibo:账号
+# Redis密码，如无填None
+REDIS_PASSWORD = 'foobared'
 
-Value分别为密码和Cookies
+# 产生器使用的浏览器
+BROWSER_TYPE = 'Chrome'
 
-账号自行某宝购买
+# 产生器类，如扩展其他站点，请在此配置
+GENERATOR_MAP = {
+    'weibo': 'WeiboCookiesGenerator'
+}
 
-Redis连接信息到cookiespool/config文件修改
+# 测试类，如扩展其他站点，请在此配置
+TESTER_MAP = {
+    'weibo': 'WeiboValidTester'
+}
 
-### 云打码平台配置
+TEST_URL_MAP = {
+    'weibo': 'https://m.weibo.cn/api/container/getIndex?uid=1804544030&type=uid&page=1&containerid=1076031804544030'
+}
 
-到yundama.com注册开发者和普通用户。
+# 产生器和验证器循环周期
+CYCLE = 120
 
-开发者申请应用ID和KEY，普通用户用于充值登录。
+# API地址和端口
+API_HOST = '0.0.0.0'
+API_PORT = 5000
 
-配置信息到cookiespool/config文件修改
+
+```
 
 
 ### 进程开关
 
-配置信息到cookiespool/config文件修改
-
-## 运行
+在config.py修改
 
 ```
-python3 run.py
+# 产生器开关，模拟登录添加Cookies
+GENERATOR_PROCESS = True
+# 验证器开关，循环检测数据库中Cookies是否可用，不可用删除
+VALID_PROCESS = True
+# API接口服务
+API_PROCESS = True
 ```
+
+
+## 账号购买
+
+账号可在淘宝购买
 
 ## 批量导入
 
@@ -70,37 +94,42 @@ exit
 
 ## 运行效果
 
-开启Generator、API，关闭Tester为例：
+三个进程全部开启：
+
 
 ```
-Generating Cookies
- * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
-Getting 526 accounts from Redis
-Getting Cookies of  weibo uva68312006hao@163.com 1nr0nkwes7
-Generating Cookies of uva68312006hao@163.com
-出现验证码，开始识别验证码
-Retrying:  1400009488 Count:  1
-{'cid': 1400009488, 'method': 'result'}
-{'cid': 1400009488, 'ret': -3002, 'text': ''}
-云打码验证码还在识别
-Retrying:  1400009488 Count:  2
-{'cid': 1400009488, 'method': 'result'}
-{'cid': 1400009488, 'ret': -3002, 'text': ''}
-云打码验证码还在识别
-Retrying:  1400009488 Count:  3
-{'cid': 1400009488, 'method': 'result'}
-{'cid': 1400009488, 'ret': -3002, 'text': ''}
-云打码验证码还在识别
-Retrying:  1400009488 Count:  4
-{'cid': 1400009488, 'method': 'result'}
-{'cid': 1400009488, 'ret': -3002, 'text': ''}
-云打码验证码还在识别
-Retrying:  1400009488 Count:  5
-{'cid': 1400009488, 'method': 'result'}
-{'cid': 1400009488, 'ret': 0, 'text': '4uh4h'}
-登录成功
-[{'expiry': 1525092087.375918, 'secure': False, 'value': '0cS3YKcgWrDRsV', 'httpOnly': False, 'name': 'SUHB', 'path': '/', 'domain': '.weibo.cn'}, {'expiry': 1525092087.374765, 'secure': False, 'value': '0033WrSXqPxfM725Ws9jqgMF55529P9D9W5H8du8O9J-.X.2Zd-6LbEK5JpX5o2p5NHD95QfS0ecSKe7e0n4Ws4Dqcj.i--fiK.7iKn4i--ci-z7i-zRi--fi-2fiK.ci--4i-2pi-i2', 'httpOnly': False, 'name': 'SUBP', 'path': '/', 'domain': '.weibo.cn'}, {'expiry': 1525092087.373734, 'secure': False, 'value': '_2A250AasnDeThGeNJ6FQU8y7PwzWIHXVXDTVvrDV6PUJbktBeLRfukW0wFLR2922NnApkDOZb_eNrRfNBZQ..', 'httpOnly': True, 'name': 'SUB', 'path': '/', 'domain': '.weibo.cn'}, {'expiry': 1496148087.677672, 'secure': False, 'value': 'b2d2d84c5aafcc02c0dac2faa4acc43f', 'httpOnly': True, 'name': '_T_WM', 'path': '/', 'domain': '.weibo.cn'}, {'secure': False, 'value': '1493556087', 'httpOnly': False, 'name': 'SSOLoginState', 'path': '/', 'domain': '.weibo.cn'}, {'expiry': 1808916087.372439, 'secure': False, 'value': 'AnPRL-vKWx_-0LWAO4Mk79GSyD6FxNqsFzhSNFOZI1MxKni8Ok7C3thzDOuIdEdh-0SvYb25zbF-znxYY_Z5hK4.', 'httpOnly': True, 'name': 'SCF', 'path': '/', 'domain': '.weibo.cn'}, {'expiry': 1496148083.263736, 'secure': False, 'value': '1496148083', 'httpOnly': False, 'name': 'ALF', 'path': '/', 'domain': '.weibo.cn'}]
-{'SUHB': '0cS3YKcgWrDRsV', 'SUB': '_2A250AasnDeThGeNJ6FQU8y7PwzWIHXVXDTVvrDV6PUJbktBeLRfukW0wFLR2922NnApkDOZb_eNrRfNBZQ..', 'SUBP': '0033WrSXqPxfM725Ws9jqgMF55529P9D9W5H8du8O9J-.X.2Zd-6LbEK5JpX5o2p5NHD95QfS0ecSKe7e0n4Ws4Dqcj.i--fiK.7iKn4i--ci-z7i-zRi--fi-2fiK.ci--4i-2pi-i2', 'SCF': 'AnPRL-vKWx_-0LWAO4Mk79GSyD6FxNqsFzhSNFOZI1MxKni8Ok7C3thzDOuIdEdh-0SvYb25zbF-znxYY_Z5hK4.', 'SSOLoginState': '1493556087', '_T_WM': 'b2d2d84c5aafcc02c0dac2faa4acc43f', 'ALF': '1496148083'}
-成功获取到Cookies
-Saving Cookies to Redis uva68312006hao@163.com {"SUHB": "0cS3YKcgWrDRsV", "SUB": "_2A250AasnDeThGeNJ6FQU8y7PwzWIHXVXDTVvrDV6PUJbktBeLRfukW0wFLR2922NnApkDOZb_eNrRfNBZQ..", "SUBP": "0033WrSXqPxfM725Ws9jqgMF55529P9D9W5H8du8O9J-.X.2Zd-6LbEK5JpX5o2p5NHD95QfS0ecSKe7e0n4Ws4Dqcj.i--fiK.7iKn4i--ci-z7i-zRi--fi-2fiK.ci--4i-2pi-i2", "SCF": "AnPRL-vKWx_-0LWAO4Mk79GSyD6FxNqsFzhSNFOZI1MxKni8Ok7C3thzDOuIdEdh-0SvYb25zbF-znxYY_Z5hK4.", "SSOLoginState": "1493556087", "_T_WM": "b2d2d84c5aafcc02c0dac2faa4acc43f", "ALF": "1496148083"}
+API接口开始运行
+ * Running on http://0.0.0.0:5000/ (Press CTRL+C to quit)
+Cookies生成进程开始运行
+Cookies检测进程开始运行
+正在生成Cookies 账号 14747223314 密码 asdf1129
+正在测试Cookies 用户名 14747219309
+Cookies有效 14747219309
+部分测试结果 {"cardlistInfo":{"containerid":"1076031804544030",
+正在测试Cookies 用户名 14740626332
+Cookies有效 14740626332
+部分测试结果 {"cardlistInfo":{"containerid":"1076031804544030",
+正在测试Cookies 用户名 14740691419
+Cookies有效 14740691419
+部分测试结果 {"cardlistInfo":{"containerid":"1076031804544030",
+正在测试Cookies 用户名 14740618009
+Cookies有效 14740618009
+部分测试结果 {"cardlistInfo":{"containerid":"1076031804544030",
+Cookies有效 14740636046
+部分测试结果 {"cardlistInfo":{"containerid":"1076031804544030",
+正在测试Cookies 用户名 14747222472
+Cookies有效 14747222472
+部分测试结果 {"cardlistInfo":{"containerid":"1076031804544030",
+Cookies检测完成
+验证码位置 420 580 384 544
+成功匹配
+拖动顺序 [1, 4, 2, 3]
+成功获取到Cookies {'SUHB': '08J77UIj4w5n_T', 'SCF': 'AimcUCUVvHjswSBmTswKh0g4kNj4K7_U9k57YzxbqFt4SFBhXq3Lx4YSNO9VuBV841BMHFIaH4ipnfqZnK7W6Qs.', 'SSOLoginState': '1501439488', '_T_WM': '99b7d656220aeb9207b5db97743adc02', 'M_WEIBOCN_PARAMS': 'uicode%3D20000174', 'SUB': '_2A250elZQDeRhGeBM6VAR8ifEzTuIHXVXhXoYrDV6PUJbkdBeLXTxkW17ZoYhhJ92N_RGCjmHpfv9TB8OJQ..'}
+成功保存Cookies
+```
+
+## 运行
+
+```
+python3 run.py
 ```
