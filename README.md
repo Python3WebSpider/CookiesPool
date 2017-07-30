@@ -69,7 +69,7 @@ API_PROCESS = True
 账号可在淘宝购买
 
 
-## 批量导入
+## 导入账号
 
 ```
 python3 importer.py
@@ -90,6 +90,15 @@ python3 importer.py
 账号 18459749258 密码 rktfye8937
 录入成功
 exit
+```
+
+
+## 运行
+
+请先导入一部分账号之后再运行，运行命令：
+
+```
+python3 run.py
 ```
 
 ## 运行效果
@@ -126,10 +135,4 @@ Cookies检测完成
 拖动顺序 [1, 4, 2, 3]
 成功获取到Cookies {'SUHB': '08J77UIj4w5n_T', 'SCF': 'AimcUCUVvHjswSBmTswKh0g4kNj4K7_U9k57YzxbqFt4SFBhXq3Lx4YSNO9VuBV841BMHFIaH4ipnfqZnK7W6Qs.', 'SSOLoginState': '1501439488', '_T_WM': '99b7d656220aeb9207b5db97743adc02', 'M_WEIBOCN_PARAMS': 'uicode%3D20000174', 'SUB': '_2A250elZQDeRhGeBM6VAR8ifEzTuIHXVXhXoYrDV6PUJbkdBeLXTxkW17ZoYhhJ92N_RGCjmHpfv9TB8OJQ..'}
 成功保存Cookies
-```
-
-## 运行
-
-```
-python3 run.py
 ```
