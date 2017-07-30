@@ -1,209 +1,83 @@
 import random
-
 import redis
-
 from cookiespool.config import *
-from cookiespool.error import *
 
 
 class RedisClient(object):
-    def __init__(self, host=REDIS_HOST, port=REDIS_PORT, password=REDIS_PASSWORD):
+    def __init__(self, type, website, host=REDIS_HOST, port=REDIS_PORT, password=REDIS_PASSWORD):
         """
         初始化Redis连接
         :param host: 地址
         :param port: 端口
         :param password: 密码
         """
-        if password:
-            self._db = redis.Redis(host=host, port=port, password=password)
-        else:
-            self._db = redis.Redis(host=host, port=port)
-        self.domain = REDIS_DOMAIN
-        self.name = REDIS_NAME
+        self.db = redis.Redis(host=host, port=port, password=password, decode_responses=True)
+        self.type = type
+        self.website = website
 
-    def _key(self, key):
+    def key(self):
         """
-        得到格式化的key
-        :param key: 最后一个参数key
+        得到格式化的username
+        :param username: 最后一个参数username
         :return:
         """
-        return "{domain}:{name}:{key}".format(domain=self.domain, name=self.name, key=key)
+        return "{type}:{website}".format(type=self.type, website=self.website)
 
-    def set(self, key, value):
+    def set(self, username, value):
         """
         设置键值对
-        :param key:
+        :param username:
         :param value:
         :return:
         """
-        raise NotImplementedError
+        return self.db.hset(self.key(), username, value)
 
-    def get(self, key):
+    def get(self, username):
         """
         根据键名获取键值
-        :param key:
+        :param username:
         :return:
         """
-        raise NotImplementedError
+        return self.db.hget(self.key(), username)
 
-    def delete(self, key):
+    def delete(self, username):
         """
         根据键名删除键值对
-        :param key:
+        :param username:
         :return:
         """
-        raise NotImplementedError
-
-    def keys(self):
-        """
-        得到所有的键名
-        :return:
-        """
-        return self._db.keys('{domain}:{name}:*'.format(domain=self.domain, name=self.name))
-
-    def flush(self):
-        """
-        清空数据库, 慎用
-        :return:
-        """
-        self._db.flushall()
-
-
-class CookiesRedisClient(RedisClient):
-    def __init__(self, host=REDIS_HOST, port=REDIS_PORT, password=REDIS_PASSWORD, domain='cookies', name='default'):
-        """
-        管理Cookies的对象
-        :param host: 地址
-        :param port: 端口
-        :param password: 密码
-        :param domain: 域, 如cookies, account等
-        :param name: 名称, 一般为站点名, 如 weibo, 默认 default
-        """
-        RedisClient.__init__(self, host, port, password)
-        self.domain = domain
-        self.name = name
-
-    def set(self, key, value):
-        try:
-            self._db.set(self._key(key), value)
-        except:
-            raise SetCookieError
-
-    def get(self, key):
-        try:
-            return self._db.get(self._key(key)).decode('utf-8')
-        except:
-            return None
-
-    def delete(self, key):
-        try:
-            print('Delete', key)
-            return self._db.delete(self._key(key))
-        except:
-            raise DeleteCookieError
-
-    def random(self):
-        """
-        随机得到一Cookies
-        :return:
-        """
-        try:
-            keys = self.keys()
-            return self._db.get(random.choice(keys))
-        except:
-            raise GetRandomCookieError
-
-    def all(self):
-        """
-        获取所有账户, 以字典形式返回
-        :return:
-        """
-        try:
-            for key in self._db.keys('{domain}:{name}:*'.format(domain=self.domain, name=self.name)):
-                group = key.decode('utf-8').split(':')
-                if len(group) == 3:
-                    username = group[2]
-                    yield {
-                        'username': username,
-                        'cookies': self.get(username)
-                    }
-        except Exception as e:
-            print(e.args)
-            raise GetAllCookieError
+        return self.db.hdel(self.key(), username)
 
     def count(self):
         """
-        获取当前Cookies数目
+        获取数目
         :return: 数目
         """
-        return len(self.keys())
+        return len(self.db.hlen(self.key()))
 
+    def random(self):
+        """
+        随机得到键值
+        :return:
+        """
+        return random.choice(self.db.hvals(self.key()))
 
-
-class AccountRedisClient(RedisClient):
-    def __init__(self, host=REDIS_HOST, port=REDIS_PORT, password=REDIS_PASSWORD, domain='account', name='default'):
-        RedisClient.__init__(self, host, port, password)
-        self.domain = domain
-        self.name = name
-
-    def set(self, key, value):
-        try:
-            return self._db.set(self._key(key), value)
-        except:
-            raise SetAccountError
-
-    def get(self, key):
-        try:
-            return self._db.get(self._key(key)).decode('utf-8')
-        except:
-            raise GetAccountError
+    def usernames(self):
+        """
+        获取所有账户信息
+        :return:
+        """
+        return self.db.hkeys(self.key())
 
     def all(self):
         """
-        获取所有账户, 以字典形式返回
+        获取所有键值对
         :return:
         """
-        try:
-            for key in self._db.keys('{domain}:{name}:*'.format(domain=self.domain, name=self.name)):
-                group = key.decode('utf-8').split(':')
-                if len(group) == 3:
-                    username = group[2]
-                    yield {
-                        'username': username,
-                        'password': self.get(username)
-                    }
-        except Exception as e:
-            print(e.args)
-            raise GetAllAccountError
-
-    def delete(self, key):
-        """
-        通过用户名删除用户
-        :param key:
-        :return:
-        """
-        try:
-            return self._db.delete(self._key(key))
-        except:
-            raise DeleteAccountError
+        return self.db.hgetall(self.key())
 
 
 if __name__ == '__main__':
-    """
-    conn = CookiesRedisClient()
-    conn.set('name', 'Mike')
-    conn.set('name2', 'Bob')
-    conn.set('name3', 'Amy')
-    print(conn.get('name'))
-    conn.delete('name')
-    print(conn.keys())
-    print(conn.random())
-    """
-    # 测试
-    conn = AccountRedisClient(name='weibo')
-    conn2 = AccountRedisClient(name='mweibo')
-
-
-    accounts = conn.all()
-    for account in accounts:
-        conn2.set(account['username'], account['password'])
+    conn = RedisClient('accounts', 'weibo')
+    result = conn.set('hell2o', 'sss3s')
+    print(result)

@@ -1,8 +1,8 @@
 import requests
 
-from cookiespool.db import AccountRedisClient
+from cookiespool.db import RedisClient
 
-conn = AccountRedisClient(name='weibo')
+conn = RedisClient('accounts', 'weibo')
 
 def set(account, sep='----'):
     username, password = account.split(sep)
