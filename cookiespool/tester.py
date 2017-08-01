@@ -8,7 +8,7 @@ class ValidTester(object):
     def __init__(self, website='default'):
         self.website = website
         self.cookies_db = RedisClient('cookies', self.website)
-        self.account_db = RedisClient('accounts', self.website)
+        self.accounts_db = RedisClient('accounts', self.website)
     
     def test(self, username, cookies):
         raise NotImplementedError
@@ -37,7 +37,6 @@ class WeiboValidTester(ValidTester):
             response = requests.get(test_url, cookies=cookies, timeout=5, allow_redirects=False)
             if response.status_code == 200:
                 print('Cookies有效', username)
-                print('部分测试结果', response.text[0:50])
             else:
                 print(response.status_code, response.headers)
                 print('Cookies失效', username)

@@ -114,21 +114,14 @@ Cookies检测进程开始运行
 正在生成Cookies 账号 14747223314 密码 asdf1129
 正在测试Cookies 用户名 14747219309
 Cookies有效 14747219309
-部分测试结果 {"cardlistInfo":{"containerid":"1076031804544030",
 正在测试Cookies 用户名 14740626332
 Cookies有效 14740626332
-部分测试结果 {"cardlistInfo":{"containerid":"1076031804544030",
 正在测试Cookies 用户名 14740691419
 Cookies有效 14740691419
-部分测试结果 {"cardlistInfo":{"containerid":"1076031804544030",
 正在测试Cookies 用户名 14740618009
 Cookies有效 14740618009
-部分测试结果 {"cardlistInfo":{"containerid":"1076031804544030",
-Cookies有效 14740636046
-部分测试结果 {"cardlistInfo":{"containerid":"1076031804544030",
 正在测试Cookies 用户名 14747222472
 Cookies有效 14747222472
-部分测试结果 {"cardlistInfo":{"containerid":"1076031804544030",
 Cookies检测完成
 验证码位置 420 580 384 544
 成功匹配

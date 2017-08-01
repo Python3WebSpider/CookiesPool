@@ -21,7 +21,7 @@ TESTER_MAP = {
 }
 
 TEST_URL_MAP = {
-    'weibo': 'https://m.weibo.cn/api/container/getIndex?uid=1804544030&type=uid&page=1&containerid=1076031804544030'
+    'weibo': 'https://m.weibo.cn/'
 }
 
 # 产生器和验证器循环周期
@@ -32,8 +32,8 @@ API_HOST = '0.0.0.0'
 API_PORT = 5000
 
 # 产生器开关，模拟登录添加Cookies
-GENERATOR_PROCESS = True
+GENERATOR_PROCESS = False
 # 验证器开关，循环检测数据库中Cookies是否可用，不可用删除
-VALID_PROCESS = True
+VALID_PROCESS = False
 # API接口服务
 API_PROCESS = True
