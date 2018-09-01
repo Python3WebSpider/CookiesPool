@@ -53,7 +53,7 @@ class WeiboCookies():
         """
         try:
             return bool(
-                WebDriverWait(self.browser, 5).until(EC.presence_of_element_located((By.CLASS_NAME, 'drop-title'))))
+                WebDriverWait(self.browser, 5).until(EC.presence_of_element_located((By.CLASS_NAME, 'main-wrap'))))
         except TimeoutException:
             return False
     
@@ -67,6 +67,7 @@ class WeiboCookies():
         except TimeoutException:
             print('未出现验证码')
             self.open()
+            return ''
         time.sleep(2)
         location = img.location
         size = img.size
@@ -210,23 +211,24 @@ class WeiboCookies():
                 'status': 1,
                 'content': cookies
             }
-        # 获取验证码图片
-        image = self.get_image('captcha.png')
-        numbers = self.detect_image(image)
-        self.move(numbers)
-        if self.login_successfully():
-            cookies = self.get_cookies()
-            return {
-                'status': 1,
-                'content': cookies
-            }
         else:
-            return {
-                'status': 3,
-                'content': '登录失败'
-            }
+            # 获取验证码图片
+            image = self.get_image('captcha.png')
+            numbers = self.detect_image(image)
+            self.move(numbers)
+            if self.login_successfully():
+                cookies = self.get_cookies()
+                return {
+                    'status': 1,
+                    'content': cookies
+                }
+            else:
+                return {
+                    'status': 3,
+                    'content': '登录失败'
+                }
 
 
 if __name__ == '__main__':
-    result = WeiboCookies('14773427930', 'x6pybpakq1').main()
+    result = WeiboCookies('14773427930', 'x6pybpakq1', 'Chrome').main()
     print(result)
