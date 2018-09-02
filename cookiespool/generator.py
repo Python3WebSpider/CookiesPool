@@ -1,7 +1,7 @@
 import json
 from selenium import webdriver
 from selenium.webdriver import DesiredCapabilities
-from selenium.webdriver.chrome.options import Options
+from selenium import webdriver
 from cookiespool.config import *
 from cookiespool.db import RedisClient
 from login.weibo.cookies import WeiboCookies
@@ -34,8 +34,9 @@ class CookiesGenerator(object):
             self.browser = webdriver.PhantomJS(desired_capabilities=caps)
             self.browser.set_window_size(1400, 500)
         elif BROWSER_TYPE == 'Chrome':
-            chrome_options = Options()
+            chrome_options = webdriver.ChromeOptions()
             chrome_options.add_argument('--headless')
+            chrome_options.add_argument('--disable-gpu')
             self.browser = webdriver.Chrome(chrome_options=chrome_options)
     
     def new_cookies(self, username, password):
