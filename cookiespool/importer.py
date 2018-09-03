@@ -5,7 +5,7 @@ from cookiespool.db import RedisClient
 conn = RedisClient('accounts', 'weibo')
 
 def set(account, sep='----'):
-    username, password = account.split(sep)
+    username, password = account.split(' ')
     result = conn.set(username, password)
     print('账号', username, '密码', password)
     print('录入成功' if result else '录入失败')
