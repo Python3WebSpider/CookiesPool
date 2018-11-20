@@ -53,7 +53,7 @@ class WeiboCookies():
         """
         try:
             return bool(
-                WebDriverWait(self.browser, 5).until(EC.presence_of_element_located((By.CLASS_NAME, 'drop-title'))))
+                WebDriverWait(self.browser, 5).until(EC.presence_of_element_located((By.CLASS_NAME, 'lite-iconf-profile'))))
         except TimeoutException:
             return False
     
